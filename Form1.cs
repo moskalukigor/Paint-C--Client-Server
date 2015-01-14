@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Net;
+using System.Net.Sockets;
 
 namespace WindowsFormsApplication1
 {
@@ -19,6 +21,8 @@ namespace WindowsFormsApplication1
         static short MouseStatus = 0; // 0 - Stop; 1 - Wait; 2 - Wait two click; 3 - Complete 
         Point pt1 = new Point(0, 0);
         Point pt2 = new Point(0, 0);
+
+        TcpClient client;
 
         public Form1()
         {
@@ -58,6 +62,20 @@ namespace WindowsFormsApplication1
         private void btnPt2_Click(object sender, EventArgs e)
         {
             MouseStatus = 2;
+        }
+
+        private void btnStartDrawning_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"),11000);
+                
+                client = new TcpClient();
+                client.Connect(endPoint);
+
+                NetworkStream nstream = client.GetStream();
+                byte[] barray = Encoding.Unicode.GetBytes(pt1.ToString());
+            }
         }
 
     }
