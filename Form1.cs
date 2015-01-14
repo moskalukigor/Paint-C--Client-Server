@@ -75,7 +75,23 @@ namespace WindowsFormsApplication1
 
                 NetworkStream nstream = client.GetStream();
                 byte[] barray = Encoding.Unicode.GetBytes(pt1.ToString());
+                nstream.Write(barray, 0, barray.Length);
+                client.Close();
             }
+            catch(SocketException sockEx)
+            {
+                MessageBox.Show("Socket error: " + sockEx.Message);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (client != null)
+                client.Close();
         }
 
     }
